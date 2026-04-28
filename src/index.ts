@@ -2,22 +2,8 @@
 
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CoolifyMcpServer } from './lib/mcp-server.js';
+import { parseHeaders } from './lib/parse-headers.js';
 import type { CoolifyConfig } from './types/coolify.js';
-
-function parseHeaders(argv: string[]): Record<string, string> {
-  const headers: Record<string, string> = {};
-  for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--header' && i + 1 < argv.length) {
-      const value = argv[i + 1];
-      const colonIndex = value.indexOf(':');
-      if (colonIndex > 0) {
-        headers[value.slice(0, colonIndex).trim()] = value.slice(colonIndex + 1).trim();
-      }
-      i++;
-    }
-  }
-  return headers;
-}
 
 async function main(): Promise<void> {
   const customHeaders = parseHeaders(process.argv);
