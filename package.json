@@ -30,7 +30,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky",
+    "prepare": "husky || true",
+    "postinstall": "npm run build || true",
     "prepublishOnly": "npm test && npm run lint",
     "start": "node dist/index.js"
   },
