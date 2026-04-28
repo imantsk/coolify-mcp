@@ -344,7 +344,18 @@ export class CoolifyClient {
     }
     this.baseUrl = config.baseUrl.replace(/\/$/, '');
     this.accessToken = config.accessToken;
-    this.customHeaders = config.customHeaders ?? {};
+
+    const reserved = new Set(['authorization', 'content-type']);
+    const raw = config.customHeaders ?? {};
+    const filtered: Record<string, string> = {};
+    for (const [key, value] of Object.entries(raw)) {
+      if (reserved.has(key.toLowerCase())) {
+        console.warn(`Custom header "${key}" ignored: reserved by the Coolify client`);
+      } else {
+        filtered[key] = value;
+      }
+    }
+    this.customHeaders = filtered;
   }
 
   // ===========================================================================
